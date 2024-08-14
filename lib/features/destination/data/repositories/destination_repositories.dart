@@ -1,7 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+
 import 'package:travel_app/core/error/exceptions.dart';
 import 'package:travel_app/core/error/failures.dart';
 import 'package:travel_app/core/platform/network_info.dart';
@@ -14,11 +16,13 @@ class DestinationRepositoriesImpl extends DestinationRepository {
   final NetworkInfo networkInfo;
   final DestinationLocalDataSource localDataSource;
   final DestinationRemoteDataSource remoteDataSource;
+  
+  DestinationRepositoriesImpl({
+    required this.networkInfo,
+    required this.localDataSource,
+    required this.remoteDataSource,
+  });
 
-  DestinationRepositoriesImpl(
-      {required this.networkInfo,
-      required this.localDataSource,
-      required this.remoteDataSource});
 
   @override
   Future<Either<Failures, List<DestinationEntity>>> all() async {

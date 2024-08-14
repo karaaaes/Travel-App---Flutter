@@ -1,10 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 
 import 'package:travel_app/api/urls.dart';
 import 'package:travel_app/core/error/exceptions.dart';
 import 'package:travel_app/core/error/failures.dart';
 import 'package:travel_app/features/destination/data/models/destination_model.dart';
-import 'package:http/http.dart' as http;
 
 abstract class DestinationRemoteDataSource {
   Future<List<DestinationModel>> all();
@@ -15,7 +17,7 @@ abstract class DestinationRemoteDataSource {
 class DestinationRemoteDataSourceImpl implements DestinationRemoteDataSource {
   final http.Client client;
 
-  DestinationRemoteDataSourceImpl({required this.client});
+  DestinationRemoteDataSourceImpl(this.client);  
 
   @override
   Future<List<DestinationModel>> all() async {

@@ -1,8 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:travel_app/core/error/exceptions.dart';
 import 'package:travel_app/features/destination/data/models/destination_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 const cacheAllDestination = 'all_destination';
 
@@ -14,7 +16,7 @@ abstract class DestinationLocalDataSource {
 class DestinationLocalDataSourceImpl extends DestinationLocalDataSource {
   final SharedPreferences pref;
 
-  DestinationLocalDataSourceImpl({required this.pref});
+  DestinationLocalDataSourceImpl(this.pref);
 
   @override
   Future<bool> cacheAll(List<DestinationModel> list) async {

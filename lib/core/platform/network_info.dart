@@ -7,7 +7,7 @@ abstract class NetworkInfo {
 class NetworkInfoImpl extends NetworkInfo {
   final Connectivity connectivity;
 
-  NetworkInfoImpl({required this.connectivity});
+  NetworkInfoImpl(this.connectivity);
 
   @override
   Future<bool> isConnected() async {
