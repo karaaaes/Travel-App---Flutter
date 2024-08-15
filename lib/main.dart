@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           useMaterial3: true,
-          textTheme: GoogleFonts.interTextTheme(),
+          textTheme: GoogleFonts.poppinsTextTheme(),
           scaffoldBackgroundColor: Colors.white
         ),
         initialRoute: AppRoute.dashboard,
