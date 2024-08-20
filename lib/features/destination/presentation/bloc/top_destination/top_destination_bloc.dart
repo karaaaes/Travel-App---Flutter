@@ -6,17 +6,24 @@ import 'package:travel_app/features/destination/domain/usecases/get_top_destinat
 part 'top_destination_event.dart';
 part 'top_destination_state.dart';
 
-class TopDestinationBloc extends Bloc<TopDestinationEvent, TopDestinationState> {
-  final GetTopDestinationUsecase _useCase; 
+class TopDestinationBloc
+    extends Bloc<TopDestinationEvent, TopDestinationState> {
+  final GetTopDestinationUsecase _useCase;
 
   TopDestinationBloc(this._useCase) : super(TopDestinationInitial()) {
     on<GetTopDestinationEvent>((event, emit) async {
       emit(TopDestinationLoading());
-      final result = await _useCase();
-      result.fold(
-        (failure) => emit(TopDestinationFailure(message: failure.message)),
-        (data) => emit(TopDestinationLoaded(data: data)),
-      );
+      try {
+        final result = await _useCase();
+        // print("Result from useCase: $result"); // Untuk debug sisi api
+        result.fold(
+          (failure) => emit(TopDestinationFailure(message: failure.message)),
+          (data) => emit(TopDestinationLoaded(data: data)),
+        );
+      } catch (e) {
+        print('Error occurred: $e');
+        emit(TopDestinationFailure(message: 'An unexpected error occurred'));
+      }
     });
   }
 }

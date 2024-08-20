@@ -50,6 +50,7 @@ class DestinationRemoteDataSourceImpl implements DestinationRemoteDataSource {
 
   @override
   Future<List<DestinationModel>> top() async {
+    print('${URLs.base}/destination/top.php');
     Uri url = Uri.parse('${URLs.base}/destination/top.php');
     final response = await client.get(url).timeout(const Duration(seconds: 3));
     if (response.statusCode == 200) {
