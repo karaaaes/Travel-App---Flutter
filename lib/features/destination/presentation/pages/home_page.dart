@@ -7,6 +7,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:travel_app/api/urls.dart';
+import 'package:travel_app/common/app_route.dart';
 import 'package:travel_app/features/destination/domain/entities/destination_entity.dart';
 import 'package:travel_app/features/destination/presentation/bloc/all_destination/all_destination_bloc.dart';
 import 'package:travel_app/features/destination/presentation/bloc/top_destination/top_destination_bloc.dart';
@@ -377,11 +378,11 @@ class _HomePageState extends State<HomePage> {
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     DestinationEntity destination = list[index];
-                    return itemAllDestination(destination);
+                    return itemAllDestination(context,destination);
                   },
                 );
               }
-
+      
               return const SizedBox(height: 120);
             },
           ),
@@ -391,105 +392,110 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget itemAllDestination(DestinationEntity destination) {
+Widget itemAllDestination(BuildContext context, DestinationEntity destination) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 20),
-    child: Row(
-      // crossAxisAlignment: CrossAxisAlignment.start, // Rata atas
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: ExtendedImage.network(
-            URLs.image(destination.cover),
-            fit: BoxFit.cover,
-            width: 100,
-            height: 100,
-            handleLoadingProgress: true,
-            loadStateChanged: (state) {
-              print('Load state: ${state.extendedImageLoadState}');
-              if (state.extendedImageLoadState == LoadState.failed) {
-                print('load state error');
-                return AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Colors.grey[600],
-                    child: Icon(
-                      Icons.broken_image,
-                      color: Colors.black,
+    child: GestureDetector(
+      onTap: (){
+          Navigator.pushNamed(context, AppRoute.detailDestination, arguments: destination);
+        },
+      child: Row(
+        // crossAxisAlignment: CrossAxisAlignment.start, // Rata atas
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: ExtendedImage.network(
+              URLs.image(destination.cover),
+              fit: BoxFit.cover,
+              width: 100,
+              height: 100,
+              handleLoadingProgress: true,
+              loadStateChanged: (state) {
+                print('Load state: ${state.extendedImageLoadState}');
+                if (state.extendedImageLoadState == LoadState.failed) {
+                  print('load state error');
+                  return AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: Material(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Colors.grey[600],
+                      child: Icon(
+                        Icons.broken_image,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                );
-              }
-
-              if (state.extendedImageLoadState == LoadState.loading) {
-                return AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Colors.grey[600],
-                    child: CircleLoading(),
-                  ),
-                );
-              }
-
-              return null;
-            },
+                  );
+                }
+      
+                if (state.extendedImageLoadState == LoadState.loading) {
+                  return AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: Material(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Colors.grey[600],
+                      child: CircleLoading(),
+                    ),
+                  );
+                }
+      
+                return null;
+              },
+            ),
           ),
-        ),
-        SizedBox(width: 15),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                destination.name,
-                style: TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  RatingBar.builder(
-                    initialRating: destination.rate,
-                    allowHalfRating: true,
-                    unratedColor: Colors.grey,
-                    itemBuilder: (context, index) => Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (value) {},
-                    itemSize: 15,
-                    ignoreGestures: true,
-                  ),
-                  Text(
-                    '(' +
-                        DMethod.numberAutoDigit(destination.rate) +
-                        ') / ${NumberFormat.compact().format(destination.rateCount)}',
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[500],
-                        fontWeight: FontWeight.w500),
-                  )
-                ],
-              ),
-              SizedBox(height: 10),
-              Text(
-                destination.description,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: TextStyle(
-                  color: Colors.grey,
-                  overflow: TextOverflow.fade,
-                  fontSize: 14,
-                  height: 1
+          SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  destination.name,
+                  style: TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-              )
-            ],
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    RatingBar.builder(
+                      initialRating: destination.rate,
+                      allowHalfRating: true,
+                      unratedColor: Colors.grey,
+                      itemBuilder: (context, index) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (value) {},
+                      itemSize: 15,
+                      ignoreGestures: true,
+                    ),
+                    Text(
+                      '(' +
+                          DMethod.numberAutoDigit(destination.rate) +
+                          ') / ${NumberFormat.compact().format(destination.rateCount)}',
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[500],
+                          fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+                SizedBox(height: 10),
+                Text(
+                  destination.description,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: TextStyle(
+                    color: Colors.grey,
+                    overflow: TextOverflow.fade,
+                    fontSize: 14,
+                    height: 1
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }
