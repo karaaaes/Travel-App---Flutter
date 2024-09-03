@@ -20,3 +20,5 @@ class GetSearchDestinationEvent extends SearchDestinationEvent {
   // TODO: implement props
   List<Object> get props => [query];
 }
+
+class GetSearhDestinationInitial extends SearchDestinationEvent{}

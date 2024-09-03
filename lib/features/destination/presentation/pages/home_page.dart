@@ -237,104 +237,109 @@ class _HomePageState extends State<HomePage> {
 
   Widget itemTopDestination(DestinationEntity destination) {
     final imageKey = GlobalKey();
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 30),
-      child: Column(
-        children: [
-          Expanded(
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: TopDestinationImage(url: URLs.image(destination.cover))),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      destination.name,
-                      style: TextStyle(
-                          height: 1, fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Container(
-                          width: 15,
-                          height: 15,
-                          alignment: Alignment.centerLeft,
-                          child: Icon(
-                            Icons.location_on,
-                            color: Colors.grey,
-                            size: 14,
-                          ),
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          destination.location,
-                          style:
-                              const TextStyle(fontSize: 14, color: Colors.grey),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          width: 15,
-                          height: 15,
-                          alignment: Alignment.centerLeft,
-                          child: Icon(
-                            Icons.fiber_manual_record,
-                            color: Colors.grey,
-                            size: 10,
-                          ),
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          destination.category,
-                          style:
-                              const TextStyle(fontSize: 14, color: Colors.grey),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Row(
+    return GestureDetector(
+      onTap: (){
+        Navigator.pushNamed(context, AppRoute.detailDestination, arguments: destination);
+      },
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30),
+        child: Column(
+          children: [
+            Expanded(
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: TopDestinationImage(url: URLs.image(destination.cover))),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      RatingBar.builder(
-                        initialRating: destination.rate,
-                        allowHalfRating: true,
-                        unratedColor: Colors.grey,
-                        itemBuilder: (context, index) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        onRatingUpdate: (value) {},
-                        itemSize: 15,
-                        ignoreGestures: true,
-                      ),
                       Text(
-                        '(' + DMethod.numberAutoDigit(destination.rate) + ')',
+                        destination.name,
                         style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold),
+                            height: 1, fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Container(
+                            width: 15,
+                            height: 15,
+                            alignment: Alignment.centerLeft,
+                            child: Icon(
+                              Icons.location_on,
+                              color: Colors.grey,
+                              size: 14,
+                            ),
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            destination.location,
+                            style:
+                                const TextStyle(fontSize: 14, color: Colors.grey),
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: 15,
+                            height: 15,
+                            alignment: Alignment.centerLeft,
+                            child: Icon(
+                              Icons.fiber_manual_record,
+                              color: Colors.grey,
+                              size: 10,
+                            ),
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            destination.category,
+                            style:
+                                const TextStyle(fontSize: 14, color: Colors.grey),
+                          )
+                        ],
                       )
                     ],
                   ),
-                  IconButton(
-                      onPressed: () {}, icon: Icon(Icons.favorite_border))
-                ],
-              )
-            ],
-          )
-        ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Row(
+                      children: [
+                        RatingBar.builder(
+                          initialRating: destination.rate,
+                          allowHalfRating: true,
+                          unratedColor: Colors.grey,
+                          itemBuilder: (context, index) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (value) {},
+                          itemSize: 15,
+                          ignoreGestures: true,
+                        ),
+                        Text(
+                          '(' + DMethod.numberAutoDigit(destination.rate) + ')',
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                    IconButton(
+                        onPressed: () {}, icon: Icon(Icons.favorite_border))
+                  ],
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

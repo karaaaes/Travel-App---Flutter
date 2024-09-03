@@ -1,6 +1,8 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/api/urls.dart';
+import 'package:travel_app/common/app_route.dart';
+import 'package:travel_app/features/destination/domain/entities/destination_entity.dart';
 import 'package:travel_app/features/destination/presentation/widgets/circle_loading.dart';
 import 'package:travel_app/features/destination/presentation/widgets/parallax_horizontal_delegate.dart';
 
@@ -39,7 +41,7 @@ class TopDestinationImage extends StatelessWidget {
                 ),
               );
             }
-
+    
             if (state.extendedImageLoadState == LoadState.loading) {
               return AspectRatio(
                 aspectRatio: 16 / 9,
@@ -50,7 +52,7 @@ class TopDestinationImage extends StatelessWidget {
                 ),
               );
             }
-
+    
             return null;
           },
         ),

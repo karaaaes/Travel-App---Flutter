@@ -30,6 +30,12 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   @override
+  void initState() {
+    context.read<SearchDestinationBloc>().add(GetSearhDestinationInitial());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -60,7 +66,8 @@ class _SearchPageState extends State<SearchPage> {
                   itemBuilder: (context, index) {
                     DestinationEntity destination = list[index];
                     return Container(
-                      margin: EdgeInsets.only(bottom: index == list.length ? 0 : 10),
+                      margin: EdgeInsets.only(
+                          bottom: index == list.length ? 0 : 10),
                       child: itemSearch(destination),
                     );
                   },
@@ -73,107 +80,114 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  AspectRatio itemSearch(DestinationEntity destination) {
+  Widget itemSearch(DestinationEntity destination) {
     final imageKey = GlobalKey();
-    return AspectRatio(
-      aspectRatio: 2,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Builder(
-            builder: (context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, AppRoute.detailDestination,
+            arguments: destination);
+      },
+      child: AspectRatio(
+        aspectRatio: 2,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Builder(builder: (context) {
               return Flow(
-                delegate: ParallaxVerticalDelegate(scrollable: Scrollable.of(context), listItemContext: context, backgroundImageKey: imageKey),
-                children: [
-                ExtendedImage.network(
-                  key: imageKey,
-                  URLs.image(destination.cover),
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  handleLoadingProgress: true,
-                  loadStateChanged: (state) {
-                    print('Load state: ${state.extendedImageLoadState}');
-                    if (state.extendedImageLoadState == LoadState.failed) {
-                      print('load state error');
-                      return Material(
-                        borderRadius: BorderRadius.circular(16),
-                        color: Colors.grey[600],
-                        child: Icon(
-                          Icons.broken_image,
-                          color: Colors.black,
-                        ),
-                      );
-                    }
-              
-                    if (state.extendedImageLoadState == LoadState.loading) {
-                      return Material(
-                        borderRadius: BorderRadius.circular(16),
-                        color: Colors.grey[600],
-                        child: CircleLoading(),
-                      );
-                    }
-              
-                    return null;
-                  },
-                ),
-              ]);
-            }
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: AspectRatio(
-              aspectRatio: 3.8,
-              child: Container(
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Colors.black, Colors.transparent],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter)),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  delegate: ParallaxVerticalDelegate(
+                      scrollable: Scrollable.of(context),
+                      listItemContext: context,
+                      backgroundImageKey: imageKey),
                   children: [
-                    Expanded(
-                        child: Padding(
-                      padding: const EdgeInsets.only(bottom: 5, left: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(destination.name,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold)),
-                          Text(destination.location,
-                              style: TextStyle(
-                                  color: Colors.grey[500]!,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold))
-                        ],
-                      ),
-                    )),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: RatingBar.builder(
-                        initialRating: destination.rate,
-                        allowHalfRating: true,
-                        unratedColor: Colors.grey,
-                        itemBuilder: (context, index) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        onRatingUpdate: (value) {},
-                        itemSize: 15,
-                        ignoreGestures: true,
-                      ),
+                    ExtendedImage.network(
+                      key: imageKey,
+                      URLs.image(destination.cover),
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      handleLoadingProgress: true,
+                      loadStateChanged: (state) {
+                        print('Load state: ${state.extendedImageLoadState}');
+                        if (state.extendedImageLoadState == LoadState.failed) {
+                          print('load state error');
+                          return Material(
+                            borderRadius: BorderRadius.circular(16),
+                            color: Colors.grey[600],
+                            child: Icon(
+                              Icons.broken_image,
+                              color: Colors.black,
+                            ),
+                          );
+                        }
+
+                        if (state.extendedImageLoadState == LoadState.loading) {
+                          return Material(
+                            borderRadius: BorderRadius.circular(16),
+                            color: Colors.grey[600],
+                            child: CircleLoading(),
+                          );
+                        }
+
+                        return null;
+                      },
                     ),
-                  ],
+                  ]);
+            }),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: AspectRatio(
+                aspectRatio: 3.8,
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [Colors.black, Colors.transparent],
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter)),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.only(bottom: 5, left: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(destination.name,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold)),
+                            Text(destination.location,
+                                style: TextStyle(
+                                    color: Colors.grey[500]!,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold))
+                          ],
+                        ),
+                      )),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: RatingBar.builder(
+                          initialRating: destination.rate,
+                          allowHalfRating: true,
+                          unratedColor: Colors.grey,
+                          itemBuilder: (context, index) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (value) {},
+                          itemSize: 15,
+                          ignoreGestures: true,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
